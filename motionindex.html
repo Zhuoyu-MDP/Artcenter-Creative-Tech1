@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photon connect motion</title>
+</head>
+<body>
+    
+  <script src="https://cdnjs.com/libraries/p5.js"></script>  
+  <script>
+    function changecolor(color){
+    document.bgColor=color;
+    }
+  
+ </script>
+ 
+  <script>
+      let URL = " https://api.particle.io/v1/devices/2c0033000447393035313138/events?access_token=736a823bc1f225c9a006bb84499fc538f90a6f3d"
+      let data = "";
+        let currentTime, prevTime;
+        let value = 10;
+
+    function setup(){
+
+        createCanvas(400, 400);
+    }
+    function draw(){
+        background(255);
+        
+        currentTime = millis() % 1000;
+        if(currentTime < prevTime)
+        {
+            data = loadJSON(URL, processData);
+           
+        }
+        fill(255, 0, 0);
+
+      
+ 
+        prevTime = currentTime;
+
+    }
+    function processData(data)
+    {
+        console.log(data.result);
+        value = map(parseInt(data.result), 0, 4096, 0, width);
+        console.log(value);
+    }
+    </script>
+</body>
+</html>

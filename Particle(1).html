@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Phanton connect</title>
+	</head>
+	<body>
+
+
+	 <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js" charset="utf-8">	</script>
+
+		<script>
+
+let kMax;
+let step;
+let n = 250; // number of blobs
+//let radius = 100; // diameter of the circle
+let inter = 0.05; // difference between the sizes of two blobs
+let maxNoise = 300;
+
+
+let noiseProg = (x) => (x*x);
+
+// Real-time sensor
+let URL1="https://api.particle.io/v1/devices/2a002c000847393035313137/Light_value?access_token=abe75d9004763f6abdc969eb85c0bee65b1105c1";
+let URL2="https://api.particle.io/v1/devices/2c0033000447393035313138/output_value?access_token=736a823bc1f225c9a006bb84499fc538f90a6f3d";
+let currentTime, prevTime;
+let data1="";
+let data2="";
+let radius = 100;
+
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  colorMode(HSB, 1);
+	angleMode(DEGREES);
+  noFill();
+	noLoop();
+	kMax = random(0.5, 1);
+	step = 0.02;
+}
+
+function draw() {
+  background(0.1);
+	currentTime = millis() % 1000;
+// fill in this part
+//	if currentTime < prevTime{
+//		data1 = loadJSON(URL1, processData);
+//		ColorChange = loadJSON(URL2);
+//	}
+if(currentTime < prevTime)
+        {
+            data2 = loadJSON(URL2);
+           
+		}
+
+if(data2 = 1)
+{
+  for (let i = 0; i < n; i++) {
+      let alpha = 1 - noiseProg(i / n);
+        for (let i = 0; i < 256; i++)
+         {let r = random(255);}
+  for (let i = 0; i < 256; i++) 
+  {let g = random(255);}
+  for (let i = 0; i < 256; i++)
+   {let b = random(255);}
+        stroke(r, g, b, alpha);
+  }
+}
+if(data2 = 0)
+{
+	stroke(0.9, alpha);
+  
+}
+
+      let size = radius + i * inter;
+		let k = kMax * sqrt(i/n);
+		let noisiness = maxNoise * noiseProg(i / n);
+    blob(size, width/2, height/2, k, i * step, noisiness);
+  
+}
+
+function blob(size, xCenter, yCenter, k, t, noisiness) {
+  beginShape();
+	let angleStep = 360 / 500;
+  for (let theta = 0; theta < 360; theta += angleStep) {
+    let r1, r2;
+		/*
+    if (theta < PI / 2) {
+      r1 = cos(theta);
+      r2 = 1;
+    } else if (theta < PI) {
+      r1 = 0;
+      r2 = sin(theta);
+    } else if (theta < 3 * PI / 2) {
+      r1 = sin(theta);
+      r2 = 0;
+    } else {
+      r1 = 1;
+      r2 = cos(theta);
+    }
+		*/
+		r1 = cos(theta)+1;
+		r2 = sin(theta)+1;
+    let r = size + noise(k * r1,  k * r2, t) * noisiness;
+    let x = xCenter + r * cos(theta);
+    let y = yCenter + r * sin(theta);
+    curveVertex(x, y);
+  }
+  endShape(CLOSE);
+}
+
+function processData(data1){
+	console.log(radius.result);
+	radius = map (parseInt(data1.result),0.4096,0,200);
+	console.log(radius);
+
+}
+
+
+		</script>
+
+
+
+
+
+
+
+	</body>
+</html>
