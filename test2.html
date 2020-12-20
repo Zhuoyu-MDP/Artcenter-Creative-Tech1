@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photon2</title>
+
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script>
+        var URL1 = "paste mine url here";
+        var URL2 = "paster your url here";
+
+        // init two sensors' data
+        var somethingchanged_1 = 0;
+        var somethingchanged_2 = 0;
+
+    function gotDataF(dataF) {
+        var somethingchanged_1 = dataF.result; // change dataF.result to the real Json location
+        position = map (somethingchanged_1, 3250 , 1750, 0, 255);
+    }
+
+    function gotDataZ(dataZ) {
+        var somethingchanged_2 = dataZ.result; // change dataF.result to the real Json location
+        //position = map (somethingchanged_2, -90 , 90, 0, 255); // change the data to your wanted area
+    }
+        
+
+    function setup(){
+        // set up refresh loadJson per second
+
+        setInterval(askRefresh,1000);
+        
+        function askRefresh(){
+            loadJSON(URL2, gotDataF, 'jsonp');
+            loadJSON(URL1, gotDataZ, 'jsonp');
+        }
+        //Let's begin the drawing part setting!
+        
+    }
+    function draw(){
+        
+
+    }
+   
+    </script>
+</body>
+</html>
+
+
+
